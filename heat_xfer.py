@@ -6,13 +6,32 @@ __status__ = 'Development'
 """
 heat_xfer.py
 
-Uses numpy 1.9.1 and written for python 3.4
+Contains functions for temperature dependent physical parameters of OFHC copper.
+Each function has its source listed in the docstring. There are valid ranges of temperature for each function.
 
-Functions for thermal conductivity of copper and aluminum. Expansion coefficient,
-resistivity and specific heat for copper.
+Copyright (c) 2015 Christopher W Jones
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 """
-import numpy as np
-from scipy.integrate import quad
+import numpy as np  #v1.9.1
+from scipy.integrate import quad  #v0.14.0
+
 DENSITY_CU = 8.96  # g / cm^3
 INTR_RESIST_CU = 1.71e-6  # Ohm * cm
 ALPHA_CU = 3.86e-3  # 1/K ... Should this be 6.8e-3
