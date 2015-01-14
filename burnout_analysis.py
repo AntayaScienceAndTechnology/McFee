@@ -17,8 +17,6 @@ gram
 centimeter
 second
 
-The MIT License (MIT)
-
 Copyright (c) 2015 Christopher W Jones
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
