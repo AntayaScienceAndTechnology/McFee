@@ -13,4 +13,5 @@ McFee_Functions.py holds the functions used by mcfee_analysis.py
 
 heat_xfer.py holds functions and constants relating to physical properties of OFHC copper.
 
-All software files are licensed by the MIT License.
+All software files are licensed by the MIT License
+Copyright (c) 2015 Christopher W Jones
