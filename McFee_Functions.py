@@ -1,10 +1,10 @@
 __author__ = 'Chris Jones'
-import sys
+
 import numpy as np
 from scipy.integrate import quad
 import heat_xfer as hx
-sys.path.insert(0, 'C:/Users/Chris Jones/Documents/PythonProjects/OFHC_Therm_Cond')
 
+# Values for default parameters
 default_rrr = 50
 default_I = 200
 default_res_increase = 0.
