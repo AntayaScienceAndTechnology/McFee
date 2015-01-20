@@ -5,7 +5,7 @@ from scipy.integrate import quad
 import heat_xfer as hx
 
 # Values for default parameters
-default_rrr = 50
+default_rrr = 150
 default_I = 200
 default_res_increase = 0.
 default_rho_273 = 1.71e-6
