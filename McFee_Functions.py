@@ -2,9 +2,13 @@ __author__ = 'Chris Jones'
 import sys
 import numpy as np
 from scipy.integrate import quad
-sys.path.insert(0, 'C:/Users/Chris Jones/Documents/PythonProjects/OFHC_Therm_Cond')
 import heat_xfer as hx
+sys.path.insert(0, 'C:/Users/Chris Jones/Documents/PythonProjects/OFHC_Therm_Cond')
 
+default_rrr = 50
+default_I = 200
+default_res_increase = 0.
+default_rho_273 = 1.71e-6
 
 def get_kr_ave1(u_l, u_h):
     """
@@ -16,7 +20,7 @@ def get_kr_ave1(u_l, u_h):
     if u_l == u_h:
         return 0.
 
-    kr_func = lambda u: hx.therm_cond_cu(u, rrr=150) * hx.resistivity_BG(u)
+    kr_func = lambda u: hx.therm_cond_cu(u, rrr=default_rrr) * hx.resistivity_BG(u)
     return (1 / (u_h - u_l)) * quad(kr_func, u_l, u_h)[0]
 
 
@@ -31,7 +35,7 @@ def get_qn1(u_l, u_h, I):  # The heat flow at the cold end
     return I * np.sqrt(2 * get_kr_ave1(u_l, u_h) * (u_h - u_l))
 
 
-def get_qps1(u, u_l,  I=200):
+def get_qps1(u, u_l,  I=default_I):
     qps = np.zeros(len(u))
 
     for i in range(len(u)):
@@ -40,7 +44,7 @@ def get_qps1(u, u_l,  I=200):
     return qps
 
 
-def get_kr_ave2(u_l, u_h, du, r_increase=0.):
+def get_kr_ave2(u_l, u_h, du, r_increase=default_res_increase):
     """
     Returns the average k*r value from u_l to u_h using summation
     :param u_l:
@@ -56,7 +60,7 @@ def get_kr_ave2(u_l, u_h, du, r_increase=0.):
     return np.sum(get_kp(x)*get_rp(x, r_increase=r_increase)) / len(x)
 
 
-def get_qn2(u_l, u_h, I, du, r_increase=0.):
+def get_qn2(u_l, u_h, I, du, r_increase=default_res_increase):
     """
     Returns the nth heat flow value in watts using summation
     :param u_l: cold end temperature in Kelvin
@@ -73,7 +77,7 @@ def get_qn2(u_l, u_h, I, du, r_increase=0.):
     return I * np.sqrt(2 * get_kr_ave2(u_l, u_h, du, r_increase=r_increase) * (u_h - u_l))
 
 
-def get_qps2(u, du, I=200):
+def get_qps2(u, du, I=default_I):
     qps = np.zeros(len(u))
     u_max = max(u)
 
@@ -83,7 +87,7 @@ def get_qps2(u, du, I=200):
     return qps
 
 
-def get_kr_cumsum(cell_temps, r_increase=0.):
+def get_kr_cumsum(cell_temps, r_increase=default_res_increase):
     """
     For a given cell temperature range, return the sum of the k*r products.
     Used by 'get_la_ratio()'
@@ -107,7 +111,7 @@ def get_qn3(kr_sum, du, I):
     return I * np.sqrt(2 * kr_sum * du)
 
 
-def get_la_ratio(u, du, I, r_increase=0.):
+def get_la_ratio(u, du, I, r_increase=default_res_increase):
     """
     Given a temperature range and current, returns the optimized length to area ratio of the conductor.
     :param r_increase:
@@ -132,7 +136,7 @@ def get_la_ratio(u, du, I, r_increase=0.):
     return ratio / I ** 2
 
 
-def get_kp(u, rrr=150):
+def get_kp(u, rrr=default_rrr):
     """
     Given a temperature, or array of temperatures, returns the thermal conductivity.
     :param u:
@@ -142,7 +146,7 @@ def get_kp(u, rrr=150):
     return hx.therm_cond_cu(u, rrr)
 
 
-def get_sp(u, rrr=150, rho273=1.71e-6, r_increase=0.):
+def get_sp(u, rrr=default_rrr, rho273=default_rho_273, r_increase=default_res_increase):
     """
     Given a temperature, or an array of temperatures, returns the electrical conductivity.
     :param r_increase:
@@ -154,7 +158,7 @@ def get_sp(u, rrr=150, rho273=1.71e-6, r_increase=0.):
     return 1 / (hx.resistivity_BG(u, rrr, rho273) + r_increase)
 
 
-def get_rp(u, rrr=150, rho273=1.71e-6, r_increase=0.):
+def get_rp(u, rrr=default_rrr, rho273=default_rho_273, r_increase=default_res_increase):
     """
     Given a temperature, or an array of temperatures, returns the electrical resistivity.
     :param u:
