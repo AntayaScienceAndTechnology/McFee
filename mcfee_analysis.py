@@ -18,9 +18,9 @@ I = 200.
 current_deviation = 0  # Graph showing how deviations from design current affect heat load
 optimized_la_ratio = 0  # Graph of l to a ratio for given conditions
 optimized_heat_load = 0  # Graph of optimizied heat load by design current
-cold_work = 0
-temp_variation = 0
-cw_and_temp = 0
+cold_work = 0  # Simulate added resistivity due to cold work done at 295 K
+temp_variation = 0  # Simulation variation in temp of lead at warm end
+cw_and_temp = 0  # Combine the cold work and temp variation simulation
 
 if current_deviation:
     x = np.logspace(-3, 3, 50, base=2)
@@ -36,16 +36,13 @@ if current_deviation:
     plt.show()
 
 if optimized_la_ratio:
-    # u = np.arange(uH, uL - 10 - du, -du)
     u = np.linspace(uH, uL - 10, num=num)
     calc_du = u[0] - u[1]
-    # print(calc_du)
     temp_of_interest = uL  # This temp will be annotated on the graph
     toi_u = np.linspace(uH, uL, num=num)
     toi_du = toi_u[0] - toi_u[1]
     rat_interest = mf.get_la_ratio(toi_u, toi_du, I)
     print('Ratio from {} K to {} K is {:.1f}'.format(uH, uL, rat_interest))
-    # rat_interest = mf.get_la_ratio(np.arange(uH, temp_of_interest - du, -du), du, I)
     rat = np.zeros(len(u))
 
     for i in range(2, len(u) + 1):
