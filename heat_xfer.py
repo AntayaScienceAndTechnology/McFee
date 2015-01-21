@@ -95,10 +95,10 @@ def resistivity_BG(t, rrr=150, rho273=1.71e-6, a=9.323e-6, delta_r=0.):
     :return:
     """
 
-    singleVal = 0
+    scalar_value = 0
     if not hasattr(t, '__iter__'):
         t = np.arange(t, t + 1, 1)
-        singleVal = 1
+        scalar_value = 1
 
     rho_o = rho273 / rrr  # Ohm cm
 
@@ -114,10 +114,14 @@ def resistivity_BG(t, rrr=150, rho273=1.71e-6, a=9.323e-6, delta_r=0.):
         x, y = quad(intg, 0, debyeT / T,)
         output[el] = (T / debyeT) ** n * x
 
-    if singleVal:
+    if scalar_value:
         return rho_o + delta_r + a * output[0]
 
-    return rho_o + delta_r + a * output  # Ohm cm
+    output *= a
+
+    output += rho_o + delta_r
+
+    return output  # Ohm cm
 
 
 def specific_heat(b):
@@ -136,7 +140,6 @@ def specific_heat(b):
 
     a = []
     c = []
-    u_min = 0.0
     temp = b / 100.0
 
     for u in temp:

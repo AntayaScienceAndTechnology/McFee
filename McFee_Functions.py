@@ -2,13 +2,16 @@ __author__ = 'Chris Jones'
 
 import numpy as np
 from scipy.integrate import quad
+
 import heat_xfer as hx
+
 
 # Values for default parameters
 default_rrr = 150
-default_I = 200
+default_I = 200.
 default_res_increase = 0.
 default_rho_273 = 1.71e-6
+linspace_num = 500
 
 def get_kr_ave1(u_l, u_h):
     """
@@ -55,9 +58,9 @@ def get_kr_ave2(u_l, u_h, du, r_increase=default_res_increase):
     if u_l == u_h:
         return 0.
 
-    x = np.arange(u_l, u_h + du, du)
-
-    return np.sum(get_kp(x)*get_rp(x, r_increase=r_increase)) / len(x)
+    # x = np.arange(u_h, u_l - du, -du)
+    x = np.linspace(u_h, u_l, linspace_num)
+    return np.sum(get_kp(x)*get_rp(x, r_increase=r_increase)) / float(len(x))
 
 
 def get_qn2(u_l, u_h, I, du, r_increase=default_res_increase):
@@ -74,7 +77,7 @@ def get_qn2(u_l, u_h, I, du, r_increase=default_res_increase):
     :returns: heat load seen at cold end of conductor
     :rtype: float
     """
-    return I * np.sqrt(2 * get_kr_ave2(u_l, u_h, du, r_increase=r_increase) * (u_h - u_l))
+    return I * np.sqrt(2. * get_kr_ave2(u_l, u_h, du, r_increase=r_increase) * (u_h - u_l))
 
 
 def get_qps2(u, du, I=default_I):
@@ -108,7 +111,7 @@ def get_qn3(kr_sum, du, I):
     :return:
     :rtype:
     """
-    return I * np.sqrt(2 * kr_sum * du)
+    return I * np.sqrt(2. * kr_sum * du)
 
 
 def get_la_ratio(u, du, I, r_increase=default_res_increase):
@@ -129,11 +132,11 @@ def get_la_ratio(u, du, I, r_increase=default_res_increase):
     ratio = 0.
 
     for i in range(len(ct) - 1):
-        ratio += (sp[i] - sp[i+1]) * qs[i+1]
+        ratio += (sp[i] - sp[i+1]) * qs[i]
 
-    ratio += sp[-1] * qs[-1]
+    ratio += (sp[-1] * qs[-1])
 
-    return ratio / I ** 2
+    return ratio / I ** 2.
 
 
 def get_kp(u, rrr=default_rrr):
@@ -155,7 +158,7 @@ def get_sp(u, rrr=default_rrr, rho273=default_rho_273, r_increase=default_res_in
     :param rho273:
     :return:
     """
-    return 1 / (hx.resistivity_BG(u, rrr, rho273) + r_increase)
+    return 1. / (hx.resistivity_BG(u, rrr, rho273) + r_increase)
 
 
 def get_rp(u, rrr=default_rrr, rho273=default_rho_273, r_increase=default_res_increase):
