@@ -63,15 +63,6 @@ def therm_cond_cu(t, rrr=150):
     h = {50: 0.0014871, 100: 0.001281, 150: 0.0011969}
     i = {50: 0.003723, 100: 0.003207, 150: 0.0029988}
 
-    # if rrr not in (50, 100, 150):
-    #     return 0
-    #
-    # if type(t) == np.ndarray and (t.min() < 4 or t.max() > 300):
-    #     return 0
-    #
-    # if (type(t) == int or type(t) == float) and (t < 4 or t > 300):
-    #     return 0
-
     output = (1 / 100) * 10 ** ((a[rrr] + c[rrr] * t ** 0.5 + e[rrr] * t + g[rrr] * t ** 1.5 + i[rrr] * t ** 2) /
                                 (1 + b[rrr] * t ** 0.5 + d[rrr] * t + f[rrr] * t ** 1.5 + h[rrr] * t ** 2))
 
