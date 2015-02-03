@@ -59,12 +59,12 @@ rho = 8.96  # Density of copper in g/cm^3
 Lcoil = 10.  # Coil inductance in Henries
 
 # Selectable analyses
-r_c_constant = 0
-slow_dump = 0
-fast_dump = 0
+r_c_constant = 1
+slow_dump = 1
+fast_dump = 1
 cw = 1
 temp_var = 1
-cw_and_temp = 0
+cw_and_temp = 1
 
 ###
 # Calculate values used in further analysis
@@ -98,8 +98,10 @@ if slow_dump:
 
     A = I0 * np.sqrt(numerator[0] / (rho * denominator[0]))
 
-    print('\nUsing temp dependent specific heat and resistivity, minimum area is {:.4f} cm^2'.format(A))
-    print('For a minimum conductor diameter of {:.4f} cm'.format(np.sqrt(4 * A / np.pi)))
+    print('In a slow, {:.1f} s, dump:'.format(tSlow))
+    print('With starting temp {} K, and ending temp {} K'.format(u0, uf))
+    print('\nUsing temp dependent specific heat and resistivity:\nMinimum area: {:.4f} cm^2'.format(A))
+    print('Minimum diameter: {:.4f} cm'.format(np.sqrt(4 * A / np.pi)))
 
 # Using temp dependent specific heat and resistivity for fast dump
 if fast_dump:
@@ -111,8 +113,10 @@ if fast_dump:
 
     A = I0 * np.sqrt(numerator[0] / (rho * denominator[0]))
 
-    print('\nUsing temp dependent specific heat and resistivity, minimum area is {:.4f} cm^2'.format(A))
-    print('For a minimum conductor diameter of {:.4f} cm'.format(np.sqrt(4 * A / np.pi)))
+    print('\n\nIn a fast, {:.1f} s, dump:'.format(tFast))
+    print('With starting temp {} K, and ending temp {} K'.format(u0, uf))
+    print('\nUsing temp dependent specific heat and resistivity:\nMinimum area: {:.4f} cm^2'.format(A))
+    print('Minimum diameter: {:.4f} cm'.format(np.sqrt(4 * A / np.pi)))
 
 # Analyzing Cold Work's effect on resistivity and burnout area
 if cw:
@@ -130,10 +134,10 @@ if cw:
         A.append(I0 * np.sqrt(numerator[0] / (rho * denominator[0])))
 
     A = np.array(A)
-    print(A)
+    # print(A)
     b = np.sqrt(4 * A / np.pi)
-    print(b)
-    print(A[-1]-A[0])
+    # print(b)
+    # print(A[-1]-A[0])
     fig = plt.figure()
     ax = fig.gca()
     ax.annotate(r'25% CW',
@@ -166,7 +170,7 @@ if temp_var:
 
         A[i] = I0 * np.sqrt(numerator[0] / (rho * denominator[0]))
 
-    print(A)
+    # print(A)
 
     plt.plot(delta_u, A, 'k')
     plt.grid(True)
